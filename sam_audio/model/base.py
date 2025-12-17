@@ -47,6 +47,10 @@ class BaseModel(torch.nn.Module, ModelHubMixin):
         with open(os.path.join(cached_model_dir, "config.json")) as fin:
             config = json.load(fin)
 
+        for key, value in model_kwargs.items():
+            if key in config:
+                config[key] = value
+
         config = cls.config_cls(**config)
         model = cls(config)
         state_dict = torch.load(
